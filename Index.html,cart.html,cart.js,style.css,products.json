@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Store</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Our Store</h1>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
+
+<main>
+  <h2>Products</h2>
+  <div id="products"></div>
+</main>
+
+<footer>
+  <p>Contact: Emhiro1968@gmail.com</p>
+</footer>
+
+<script src="cart.js"></script>
+<script>
+fetch('products.json')
+  .then(response => response.json())
+  .then(data => {
+    const productsDiv = document.getElementById('products');
+    data.forEach((product, i) => {
+      const div = document.createElement('div');
+      div.classList.add('product');
+      div.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>${product.description}</p>
+        <p>Price: $${product.price}</p>
+        <button onclick="addToCart(${i})">Add to Cart</button>
+      `;
+      productsDiv.appendChild(div);
+    });
+  });
+</script>
+</body>
+</html>
+5
+let cart = [];
+
+function addToCart(index) {
+  fetch('products.json')
+    .then(response => response.json())
+    .then(data => {
+      cart.push(data[index]);
+      alert(`${data[index].name} added to cart!`);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    });
+}
+
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart')) || [];
+}
+
+function clearCart() {
+  cart = [];
+  localStorage.removeItem('cart');
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
+  background: #333;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav a {
+  color: #fff;
+  margin: 0 1rem;
+  text-decoration: none;
+}
+
+main {
+  padding: 1rem;
+}
+
+.product {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.product img {
+  max-width: 150px;
+  display: block;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart - Our Store</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Your Cart</h1>
+  <nav>
+    <a href="index.html">Home</a>
+  </nav>
+</header>
+
+<main>
+  <div id="cartItems"></div>
+
+  <h2>Checkout</h2>
+  <p>Pay directly to our Westpac account:</p>
+  <ul>
+    <li><strong>Account Name:</strong> Elliot Hiroki</li>
+    <li><strong>Bank:</strong> Westpac NZ</li>
+    <li><strong>Account Number:</strong> 03-0543-0300480-000</li>
+    <li><strong>Reference:</strong> Your name or order ID</li>
+  </ul>
+  <p>After payment, email your confirmation and shipping address to <strong>Emhiro1968@gmail.com</strong>.</p>
+
+  <button onclick="clearCart(); displayCart();">Clear Cart</button>
+</main>
+
+<footer>
+  <p>Contact: Emhiro1968@gmail.com</p>
+</footer>
+
+<script src="cart.js"></script>
+<script>
+function displayCart() {
+  const cartItems = getCart();
+  const container = document.getElementById('cartItems');
+  container.innerHTML = '';
+  if(cartItems.length === 0) {
+    container.innerHTML = '<p>Your cart is empty.</p>';
+    return;
+  }
+  cartItems.forEach(item => {
+    const div = document.createElement('div');
+    div.classList.add('product');
+    div.innerHTML = `
+      <h3>${item.name}</h3>
+      <p>${item.description}</p>
+      <p>Price: $${item.price}</p>
+    `;
+    container.appendChild(div);
+  });
+}
+displayCart();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
